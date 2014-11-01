@@ -7,6 +7,8 @@
 #include <map>
 using namespace std;
 
+#include "RectF.h"
+
 class TextureAtlas;
 
 class Level
@@ -18,9 +20,14 @@ public:
 	map<char, string> spriteMap;
 	// a reference to the texture atlas used for bkg sprites
 	TextureAtlas *ta;
+	const static int tileSize = 32;
 	
 	Level();
+	char tileNear( int x, int y );
+	RectF tileRectNear( int x, int y );
 	bool load( string filename, TextureAtlas *texAtlas );
+	int getSizeX();
+	int getSizeY();
 };
 
 #endif

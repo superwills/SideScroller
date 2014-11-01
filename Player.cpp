@@ -2,7 +2,13 @@
 
 Player::Player(string name, string imageFile) : Sprite(name, imageFile)
 {
-	
+	contactingGround = false;
+}
+
+void Player::jump()
+{
+	if( contactingGround )
+		vel.y += -10;
 }
 
 void Player::accel( float amt )
@@ -12,6 +18,9 @@ void Player::accel( float amt )
 
 void Player::update()
 {
-	rect.x += vel.x ;
+	vel.y += .085;//gravity
+	clamp<float>( vel.y, -5.f, 5.f );
+	rect.xy() += vel ;
 	vel.x *= 0.97;
+	clamp<float>( vel.x, -5.f, 5.f );
 }

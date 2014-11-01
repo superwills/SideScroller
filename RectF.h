@@ -1,6 +1,8 @@
 #ifndef RECTF_H
 #define RECTF_H
 
+#include "Vectorf.h"
+
 struct RectF
 {
   // x,y is TOP LEFT corner of the rectangle
@@ -99,6 +101,33 @@ struct RectF
   inline bool isOnTopOf( const RectF& o ) const {
     // bottom on top of o's top
     return bottom() < o.top() ;
+  }
+
+
+  inline Vector2f offsetsToClear( const RectF& o ) const {
+	Vector2f sep;
+	if( !hit(o) )
+	  return sep;
+
+	// +------+
+	// |     +-----+
+	// |  o  ||this|
+	// +-----|+    |
+	//       +-----+
+	if( right() > o.right() )
+	  sep.x = o.right() - left();
+	// +------+
+	// |     +-----+
+	// |this ||  o |
+	// +-----|+    |
+	//       +-----+
+	else
+	  sep.x = o.left() - right();
+	if( bottom() > o.bottom() ) // if this has a greater bottom
+	  sep.y = top() - o.bottom();
+	else
+	  sep.y = o.top() - bottom();
+	return sep;
   }
   
   // Default considers origin BOTTOM LEFT.

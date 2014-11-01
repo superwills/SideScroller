@@ -46,9 +46,9 @@ public:
 	void togglePause();
 	void drawScores();
 	void checkForCollisions();
-	void centerCamera();
 	void runGame();
 	void update();
+	void clear();
 	void draw();
 };
 

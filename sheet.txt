@@ -13,4 +13,7 @@ trees = 33 0 32 32
 object = x y w h
 
 
+2014-11-01
+5:31p
 
+I ran into the problem of the rectangles below you pushing you right and left.

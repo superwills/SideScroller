@@ -8,6 +8,35 @@ Level::Level()
 {
 }
 
+char Level::tileNear( int x, int y )
+{
+	int i = y / tileSize;
+	int j = x / tileSize;
+	
+	if( i >= levelMap.size() )
+	{
+		//error( "i=%d is OOB", i );
+		return 0;
+	}
+	else if( j >= levelMap[i].size() )
+	{
+		//error( "j=%d is OOB", j );
+		return 0;
+	}
+
+	return levelMap[i][j];
+}
+
+RectF Level::tileRectNear( int x, int y )
+{
+	RectF rect;
+	rect.x = x/tileSize*tileSize;
+	rect.y = y/tileSize*tileSize;
+	rect.w = tileSize;
+	rect.h = tileSize;
+	return rect;
+}
+
 bool Level::load(string filename, TextureAtlas *texAtlas)
 {
 	ta = texAtlas;
@@ -75,3 +104,18 @@ bool Level::load(string filename, TextureAtlas *texAtlas)
 	return true;
 }
 
+int Level::getSizeX()
+{
+	if( !levelMap.size() )
+	{
+		error( "No map" );
+		return 0;
+	}
+
+	return levelMap[0].size();
+}
+
+int Level::getSizeY()
+{
+	return levelMap.size();
+}

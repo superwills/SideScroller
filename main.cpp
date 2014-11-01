@@ -47,6 +47,9 @@ int main(int argc, char* args[])
 			}
 		}
 		
+		// I put the clear here so update() can draw debug fix info
+		game.clear();
+
 		// Update the game, move the sprites, etc
 		game.update();
 

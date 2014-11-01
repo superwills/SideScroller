@@ -169,6 +169,9 @@ union Vector2f
 	inline bool isNaN() const {
 		return _isnan(x) || _isnan(y) ;
 	}
+	inline bool isNonZero() const {
+		return x || y;
+	}
 	// You have to figure out what to do with nan.  nan
 	// only results from 0.f/0.f, so USUALLY it should mean inf.
 	inline Vector2f& checkNaN() {

@@ -10,7 +10,7 @@ using namespace std;
 #include <SDL_ttf.h>
 #include "TextureAtlas.h"
 #include "Log.h"
-#include "Vectorf.h"
+#include "RectF.h"
 
 // If you link the SDL libraries here, you don't
 // have to worry about setting the project settings
@@ -55,7 +55,9 @@ public:
 	// Draws you a simple line
 	void line( int startX, int startY, int endX, int endY, SDL_Color color );
 	void rect( int x, int y, int w, int h, SDL_Color color );
+	void rect( RectF rect, SDL_Color color );
 	void fillRect( int x, int y, int w, int h, SDL_Color color );
+	void fillRect( RectF rect, SDL_Color color );
 	void drawTexture( SDL_Texture* tex, SDL_Rect rect );
 	void drawAtlasSpriteAt( int x, int y, string atlasName, string spriteName );
 

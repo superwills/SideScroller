@@ -22,7 +22,7 @@ size(windowWidth, windowHeight)
 	
 	// retrieve the surface (collection of pixels) of the window
 	screenSurface = SDL_GetWindowSurface( window );
-	
+
 	// create a hardware accelerated renderer
 	// that displays only once per refresh interval
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
@@ -60,11 +60,25 @@ void SDL::rect( int x, int y, int w, int h, SDL_Color color )
 	SDL_RenderDrawRect( renderer, &rect );
 }
 
+void SDL::rect( RectF rect, SDL_Color color )
+{
+	SDL_Rect r = { rect.x - origin.x, rect.y - origin.y, rect.w, rect.h };
+	setColor( color );
+	SDL_RenderDrawRect( renderer, &r );
+}
+
 void SDL::fillRect( int x, int y, int w, int h, SDL_Color color )
 {
 	SDL_Rect rect = { x - origin.x, y - origin.y, w, h };
 	setColor( color );
 	SDL_RenderFillRect( renderer, &rect );
+}
+
+void SDL::fillRect( RectF rect, SDL_Color color )
+{
+	SDL_Rect r = { rect.x - origin.x, rect.y - origin.y, rect.w, rect.h };
+	setColor( color );
+	SDL_RenderFillRect( renderer, &r );
 }
 
 void SDL::drawTexture( SDL_Texture* tex, SDL_Rect rect )
@@ -108,23 +122,8 @@ void SDL::playSound( string soundFile )
 
 SDL_Surface* SDL::loadSurface( string filename )
 {
-	SDL_Surface* opSurface = NULL;
-	SDL_Surface* rawSurface = IMG_Load( filename.c_str() );
-	if( !rawSurface )
-	{
-		error( "Couldn't load `%s`! Error: %s\n", filename.c_str(), IMG_GetError() );
-	}
-	else
-	{
-		// Convert the loaded surface to same as screen surface format
-		opSurface = SDL_ConvertSurface( rawSurface, screenSurface->format, NULL );
-		if( !opSurface )
-		{
-			error( "Unable to optimize image %s! Error: %s\n", filename.c_str(), SDL_GetError() );
-		}
-		SDL_FreeSurface( rawSurface );
-	}
-	return opSurface;
+	// don't optimize the surface because it obliterates the alpha channel
+	return IMG_Load( filename.c_str() );
 }
 
 SDL_Texture* SDL::loadTexture( string filename )
@@ -138,6 +137,7 @@ SDL_Texture* SDL::loadTexture( string filename )
 	
 	SDL_Texture* tex = SDL_CreateTextureFromSurface( renderer, loadSurface(filename) );
 	SDL_SetTextureBlendMode( tex, SDL_BLENDMODE_BLEND );
+	
 	texes[ filename ] = tex;
 	return tex;
 }

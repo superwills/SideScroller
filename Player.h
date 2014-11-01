@@ -6,8 +6,10 @@
 class Player : public Sprite
 {
 public:
+	bool contactingGround;
 	Player(string name, string imageFile);
-
+	
+	void jump();
 	void accel( float amt );
 
 	void update();
