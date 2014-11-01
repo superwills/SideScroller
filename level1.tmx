@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="25" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="dwTiles" tilewidth="32" tileheight="32">
+  <image source="dwTiles.png" width="960" height="512"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="100" height="25">
+  <data encoding="base64" compression="zlib">
+   eJzt08sJgDAQRdFkp9ahzUm6sRxtRFvQIhwXQhDNJh8duQceIkiYzENjAAAAoIF9ewAAAAAAAAB82mDDT5R17P0pObm8x6ulpY/r96PMN/3gH14lm/eutY9Z5lsCMzovX1bLHRrvHufuW0kX6KMqmDupz+ttXFKcERONffi7ow/6yJkd9CZaig==
+  </data>
+ </layer>
+</map>

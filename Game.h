@@ -6,6 +6,8 @@
 #include "Sprite.h"
 #include "Controller.h"
 #include "TitleScreen.h"
+#include "Level.h"
+#include "Player.h"
 
 class Game
 {
@@ -20,6 +22,9 @@ private:
 	TitleScreen* title;
 	Sprite* pausedText;
 	SDL_Color bkgColor;	// the current background color
+	
+	Level* level;
+	Player* player;
 
 	// The font we use to draw the scores
 	TTF_Font* font;
@@ -30,6 +35,8 @@ private:
 	// An object to represent the game controller
 	Controller controller;
 
+	Vector2f camPos;
+	
 public:
 	Game( SDL& iSdl );
 	~Game();
@@ -39,6 +46,7 @@ public:
 	void togglePause();
 	void drawScores();
 	void checkForCollisions();
+	void centerCamera();
 	void runGame();
 	void update();
 	void draw();

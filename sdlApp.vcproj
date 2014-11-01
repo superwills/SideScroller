@@ -183,6 +183,38 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Level.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Level.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Player.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TextureAtlas.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TextureAtlas.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Tile.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Tile.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TitleScreen.cpp"
 				>
 			</File>
@@ -256,6 +288,30 @@
 			</File>
 			<File
 				RelativePath=".\Vectorf.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="levels"
+			>
+			<File
+				RelativePath=".\level1.txt"
+				>
+			</File>
+			<File
+				RelativePath=".\level2.txt"
+				>
+			</File>
+			<File
+				RelativePath=".\level3.txt"
+				>
+			</File>
+			<File
+				RelativePath=".\level4.txt"
+				>
+			</File>
+			<File
+				RelativePath=".\level5.txt"
 				>
 			</File>
 		</Filter>

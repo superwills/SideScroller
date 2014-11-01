@@ -37,6 +37,10 @@ Game::Game( SDL& iSdl )
 	sdl->loadWavSound( "ping3.wav" );
 	sdl->loadWavSound( "win.wav" );
 	
+	TextureAtlas* ta = sdl->loadAtlas( "atlas.png", "atlas.txt" );
+	level = new Level();
+	level->load( "level1.txt", ta );
+	player = new Player("player", "mario.png");
 	setState( Title );
 }
 
@@ -100,15 +104,33 @@ void Game::togglePause()
 
 void Game::checkForCollisions()
 {
+	
+}
+
+void Game::centerCamera()
+{
 
 }
 
 void Game::runGame()
 {
 	// Use the controller state to change gamestate
+	if( controller.keystate[ SDL_SCANCODE_RIGHT ] )
+		player->accel( +1 );
+
+	if( controller.keystate[ SDL_SCANCODE_LEFT ] )
+		player->accel( -1 );
+	
+	player->update();
+	
+	// 
+	sdl->origin.x = player->rect.x;
+	sdl->origin.y = player->rect.y;
 
 	// Check for collisions after each object moves
 	checkForCollisions();
+
+	centerCamera();
 }
 
 void Game::update()
@@ -140,7 +162,39 @@ void Game::draw()
 	}
 	else
 	{
-		// draw the game
+		player->draw();
+
+		// draw the background sprites, but only the tiles that are visible
+		// 
+		for( int x = sdl->origin.x; x < sdl->origin.x + sdl->getSize().x; x+=32 )
+		{
+			for( int y = 0; y < sdl->origin.y + sdl->getSize().y; y+=32 )
+			{
+				int i = y / 32;
+				int j = x / 32;
+				
+				if( i >= level->levelMap.size() )
+				{
+					error( "OOB the i" );
+					skip;
+				}
+				else if( j >= level->levelMap[i].size() )
+				{
+					error( "OOB the j" );
+					skip;
+				}
+				char c = level->levelMap[i][j];
+				string spriteName = level->spriteMap[c];
+				if( spriteName.empty() )
+				{
+					// blank, nothing gets drawn for these
+					skip;
+				}
+				
+				// starting pt to start drawing tiles depends on player start location
+				sdl->drawAtlasSpriteAt( j*32, i*32, "atlas.png", spriteName );
+			}
+		}
 	}
 	
 	if( gameState == Paused )

@@ -1,0 +1,16 @@
+? should use texture atlas immediately?
+the json output of TILED lists just NUMBERS.
+using ASCII should work ok as well.
+
+use spritesheetpacker 
+http://spritesheetpacker.codeplex.com/
+
+level design in ascii,
+
+the output of spritesheetpacker is:
+grass = 0 0 32 32
+trees = 33 0 32 32
+object = x y w h
+
+
+

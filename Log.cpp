@@ -1,7 +1,7 @@
 #include "Log.h"
 
 // LOGGING
-const char* progname = "Ping" ;
+const char* progname = "SideScroll" ;
 
 //  Info    = 1 << 0, // 1
 //  Warning = 1 << 1, // 2
