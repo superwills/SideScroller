@@ -11,6 +11,11 @@ void Player::jump()
 		vel.y += -10;
 }
 
+void Player::bounceDown()
+{
+	vel.y = -vel.y;
+}
+
 void Player::accel( float amt )
 {
 	vel.x += amt;

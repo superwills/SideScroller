@@ -17,6 +17,8 @@ class Level
 public:
 	// maps 
 	vector<string> levelMap;
+	vector< vector<Tile> > tiles;
+
 	// maps characters to strings
 	map<char, string> spriteMap;
 	// a reference to the texture atlas used for bkg sprites

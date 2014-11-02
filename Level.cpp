@@ -124,7 +124,7 @@ bool Level::load(string filename, TextureAtlas *texAtlas)
 		}
 	}
 	
-	// out put the map to the console
+	// output the map to the console
 	//for( int i = 0; i < levelMap.size(); i++ )
 	//	printf( "%s\n", levelMap[i].c_str() );
 	return true;
@@ -132,16 +132,18 @@ bool Level::load(string filename, TextureAtlas *texAtlas)
 
 int Level::getSizeX()
 {
+	// # cols in each row
 	if( !levelMap.size() )
 	{
 		error( "No map" );
 		return 0;
 	}
-
+	
 	return levelMap[0].size();
 }
 
 int Level::getSizeY()
 {
+	// # rows
 	return levelMap.size();
 }

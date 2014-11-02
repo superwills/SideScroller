@@ -1,2 +1,6 @@
-grass = 0 0 32 32
-trees = 33 0 32 32
+block = 0 0 32 32
+cloudLeft = 33 0 32 32
+cloudRight = 66 0 32 32
+grass = 0 33 32 32
+questionMark = 33 33 32 32
+trees = 66 33 32 32

@@ -110,28 +110,46 @@ void Game::checkForCollisions()
 	// check tile below
 	Vector2f centroid = player->rect.centroid();
 	Tile below = level->tileBelow( centroid.x, centroid.y );
-	//sdl->fillRect( below.rect, Blue );
+	sdl->fillRect( below.rect, Blue );
+
 	if( level->isImpassible( below ) && player->rect.bottom() > below.rect.top() )
 	{
 		sdl->fillRect( below.rect, Red );
 		player->rect.y = below.rect.top() - Level::tileSize ;
 		player->contactingGround = true;
+		player->vel.y = 0;
 	}
 
 	Tile tileAbove = level->tileAbove( centroid.x, centroid.y );
+	sdl->fillRect( tileAbove.rect, Blue );
+
 	if( level->isImpassible( tileAbove ) && player->rect.top() < tileAbove.rect.bottom() )
 	{
 		player->rect.y = tileAbove.rect.bottom()+1;
+		player->bounceDown();
+
+		// need to check bottom again
+		if( level->isImpassible( below ) && player->rect.bottom() > below.rect.top() )
+		{
+			player->rect.y = below.rect.top() - Level::tileSize ;
+			player->contactingGround = true;
+			player->vel.y = 0;
+		}
 	}
 	Tile tileRight = level->tileRightOf( centroid.x, centroid.y );
+	sdl->fillRect( tileRight.rect, Blue );
+	
 	if( level->isImpassible( tileRight ) && player->rect.right() > tileRight.rect.left() )
 	{
 		player->rect.x = tileRight.rect.x - Level::tileSize;
+		player->vel.x = 0;
 	}
 	Tile tileLeft = level->tileLeftOf( centroid.x, centroid.y );
+	sdl->fillRect( tileLeft.rect, Blue );
 	if( level->isImpassible( tileLeft ) && player->rect.left() < tileLeft.rect.right() )
 	{
 		player->rect.x = tileLeft.rect.right()+1;
+		player->vel.x = 0;
 	}
 
 }
@@ -142,9 +160,9 @@ void Game::runGame()
 	if( controller.keystate[ SDL_SCANCODE_UP ] )
 		player->jump();
 	if( controller.keystate[ SDL_SCANCODE_RIGHT ] )
-		player->accel( +1 );
+		player->accel( +.1 );
 	if( controller.keystate[ SDL_SCANCODE_LEFT ] )
-		player->accel( -1 );
+		player->accel( -.1 );
 	
 	player->update();
 	

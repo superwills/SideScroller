@@ -10,6 +10,7 @@ public:
 	Player(string name, string imageFile);
 	
 	void jump();
+	void bounceDown();
 	void accel( float amt );
 
 	void update();

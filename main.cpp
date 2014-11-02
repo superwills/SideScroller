@@ -19,8 +19,8 @@ int main(int argc, char* args[])
 	// each run of the program
 	srand(time(0));
 	
-	// Create our SDL window, name it "Ping"
-	SDL sdl( "Ping", 800, 600 );
+	// Create our SDL window
+	SDL sdl( "SideScroller", 800, 600 );
 	
 	// Construct our Game object, to retain gamestate information
 	Game game( sdl );
