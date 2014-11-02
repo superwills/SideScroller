@@ -8,7 +8,7 @@ Level::Level()
 {
 }
 
-char Level::tileNear( int x, int y )
+char Level::tileCharNear( int x, int y )
 {
 	int i = y / tileSize;
 	int j = x / tileSize;
@@ -27,14 +27,40 @@ char Level::tileNear( int x, int y )
 	return levelMap[i][j];
 }
 
-RectF Level::tileRectNear( int x, int y )
+Tile Level::tileNear( int x, int y )
 {
-	RectF rect;
-	rect.x = x/tileSize*tileSize;
-	rect.y = y/tileSize*tileSize;
-	rect.w = tileSize;
-	rect.h = tileSize;
-	return rect;
+	Tile tile;
+	tile.c = tileCharNear( x, y );
+	tile.rect.x = x/tileSize*tileSize;
+	tile.rect.y = y/tileSize*tileSize;
+	tile.rect.w = tileSize;
+	tile.rect.h = tileSize;
+	return tile;
+}
+
+Tile Level::tileAbove( int x, int y )
+{
+	return tileNear( x, y - tileSize );
+}
+
+Tile Level::tileBelow( int x, int y )
+{
+	return tileNear( x, y + tileSize );
+}
+
+Tile Level::tileLeftOf( int x, int y )
+{
+	return tileNear( x - tileSize, y );
+}
+
+Tile Level::tileRightOf( int x, int y )
+{
+	return tileNear( x + tileSize, y );
+}
+
+bool Level::isImpassible( Tile tile )
+{
+	return tile.c && tile.c != '.';
 }
 
 bool Level::load(string filename, TextureAtlas *texAtlas)

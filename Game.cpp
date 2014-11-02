@@ -106,47 +106,34 @@ void Game::checkForCollisions()
 {
 	// check scene tiles around player
 	player->contactingGround = false;
-	for( int i = -1; i <= 1; i++ )
+
+	// check tile below
+	Vector2f centroid = player->rect.centroid();
+	Tile below = level->tileBelow( centroid.x, centroid.y );
+	//sdl->fillRect( below.rect, Blue );
+	if( level->isImpassible( below ) && player->rect.bottom() > below.rect.top() )
 	{
-		for( int j = 1 ; j >= -1 ; j-- )
-		{
-			int x = player->rect.x + i * Level::tileSize;
-			int y = player->rect.y + j * Level::tileSize;
-			char c = level->tileNear( x, y );
-			RectF tileRect = level->tileRectNear( x, y );
-			sdl->fillRect( tileRect, Blue );
-			
-			if( c && c != '.' )
-			{
-				Vector2f overlaps = player->rect.offsetsToClear( tileRect );
-				if( j == -1 )
-				{
-					// tiles above
-				}
-				else if( j == 0 )
-				{
-					// tile left and right
-					player->rect.x += overlaps.x;
-					sdl->fillRect( tileRect, Yellow );
-				}
-				else
-				{
-					// tiles below
-					if( overlaps.y )
-					{
-						player->rect.y += overlaps.y - EPS;
-						player->contactingGround = true;
-						sdl->fillRect( tileRect, Red );
-					}
-				}
-			}
-		}
+		sdl->fillRect( below.rect, Red );
+		player->rect.y = below.rect.top() - Level::tileSize ;
+		player->contactingGround = true;
 	}
 
-	//if( player->contactingGround )
-	//	puts( "Ground contact" );
-	//else
-	//	puts( "air time" );
+	Tile tileAbove = level->tileAbove( centroid.x, centroid.y );
+	if( level->isImpassible( tileAbove ) && player->rect.top() < tileAbove.rect.bottom() )
+	{
+		player->rect.y = tileAbove.rect.bottom()+1;
+	}
+	Tile tileRight = level->tileRightOf( centroid.x, centroid.y );
+	if( level->isImpassible( tileRight ) && player->rect.right() > tileRight.rect.left() )
+	{
+		player->rect.x = tileRight.rect.x - Level::tileSize;
+	}
+	Tile tileLeft = level->tileLeftOf( centroid.x, centroid.y );
+	if( level->isImpassible( tileLeft ) && player->rect.left() < tileLeft.rect.right() )
+	{
+		player->rect.x = tileLeft.rect.right()+1;
+	}
+
 }
 
 void Game::runGame()
@@ -165,7 +152,7 @@ void Game::runGame()
 	sdl->origin.y = player->rect.y - sdl->getSize().y/2;
 
 	// Check for collisions after each object moves
-	//checkForCollisions();
+	checkForCollisions();
 
 }
 
@@ -203,26 +190,22 @@ void Game::draw()
 	else
 	{
 		player->draw();
-
-		// draw the background sprites, but only the tiles that are visible
-		// 
-		int startX = sdl->origin.x;
-		clamp( startX, 0, level->getSizeX()*32 );
-
-		int endX = startX + sdl->getSize().x + 32;
-		clamp( endX, 0, level->getSizeX()*32 );
-
-		int startY = sdl->origin.y;
-		clamp( startY, 0, level->getSizeY()*32 );
 		
-		int endY = startY + sdl->getSize().y;
-		clamp( endY, 0, level->getSizeY()*32 );
-		//printf( "Render from x=%d to x=%d, y=%d to y=%d\n", startX, endX, startY, endY );
-		for( int x = startX; x < endX; x+=32 )
+		// draw the background sprites, but only the tiles that are visible
+		int startX = sdl->origin.x;
+		clamp( startX, 0, level->getSizeX()*Level::tileSize );
+		int endX = startX + sdl->getSize().x + Level::tileSize;
+		clamp( endX, 0, level->getSizeX()*Level::tileSize );
+		int startY = sdl->origin.y;
+		clamp( startY, 0, level->getSizeY()*Level::tileSize );
+		int endY = startY + sdl->getSize().y + Level::tileSize;
+		clamp( endY, 0, level->getSizeY()*Level::tileSize );
+		
+		for( int x = startX; x < endX; x+=Level::tileSize )
 		{
-			for( int y = startY; y < endY; y+=32 )
+			for( int y = startY; y < endY; y+=Level::tileSize )
 			{
-				char c = level->tileNear( x, y );
+				char c = level->tileCharNear( x, y );
 
 				// no tile there
 				if( !c )	c='-';//skip;
@@ -234,8 +217,8 @@ void Game::draw()
 				if( spriteName.empty() )	skip;
 				
 				// starting pt to start drawing tiles depends on player start location
-				RectF rect = level->tileRectNear( x, y );
-				sdl->drawAtlasSpriteAt( rect.x, rect.y, "atlas.png", spriteName );
+				Tile tile = level->tileNear( x, y );
+				sdl->drawAtlasSpriteAt( tile.rect.x, tile.rect.y, "atlas.png", spriteName );
 			}
 		}
 	}
@@ -245,8 +228,7 @@ void Game::draw()
 		pausedText->draw();
 	}
 	
-	checkForCollisions();
-
+	//checkForCollisions();//so debug info renders on top
 	SDL_RenderPresent( sdl->renderer );
 }
 
