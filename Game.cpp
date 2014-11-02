@@ -40,7 +40,7 @@ Game::Game( SDL& iSdl )
 	TextureAtlas* ta = sdl->loadAtlas( "atlas.png", "atlas.txt" );
 	level = new Level();
 	level->load( "level1.txt", ta );
-	player = new Player("player", "mario.png");
+	player = new Player("player", "dario.png");
 	setState( Title );
 }
 

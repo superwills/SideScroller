@@ -44,6 +44,6 @@ bool TextureAtlas::loadData( string datafile )
 		
 		printf( "%s @ (%d %d %d %d)\n", name.c_str(), rect.x, rect.y, rect.w, rect.h );
 	}
-
+	
 	return true;
 }
