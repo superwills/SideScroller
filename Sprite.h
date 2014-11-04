@@ -32,6 +32,8 @@ public:
 	
 	bool hidden;
 
+	bool movingLeft;
+
 	void defaults();
 	Sprite(string iname);
 	Sprite(string iname, SDL_Texture* iTex);

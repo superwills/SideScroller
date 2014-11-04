@@ -58,6 +58,7 @@ public:
 	void rect( RectF rect, SDL_Color color );
 	void fillRect( int x, int y, int w, int h, SDL_Color color );
 	void fillRect( RectF rect, SDL_Color color );
+	void drawTextureFlippedX( SDL_Texture* tex, SDL_Rect rect );
 	void drawTexture( SDL_Texture* tex, SDL_Rect rect );
 	void drawAtlasSpriteAt( int x, int y, string atlasName, string spriteName );
 

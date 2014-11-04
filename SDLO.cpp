@@ -88,6 +88,13 @@ void SDL::drawTexture( SDL_Texture* tex, SDL_Rect rect )
 	SDL_RenderCopy( renderer, tex, NULL, &rect );
 }
 
+void SDL::drawTextureFlippedX( SDL_Texture* tex, SDL_Rect rect )
+{
+	rect.x -= origin.x;
+	rect.y -= origin.y;
+	SDL_RenderCopyEx( renderer, tex, NULL, &rect, 0.0, NULL, SDL_RendererFlip::SDL_FLIP_HORIZONTAL );
+}
+
 void SDL::drawAtlasSpriteAt( int x, int y, string atlasName, string spriteName )
 {
 	TextureAtlas *ta = texAtlases[ atlasName ];

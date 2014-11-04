@@ -9,6 +9,7 @@ void Sprite::defaults()
 {
 	color = SDL_ColorMake( 255, 255, 255, 255 );
 	hidden = false;
+	movingLeft = false;
 }
 
 Sprite::Sprite(string iname)
@@ -135,7 +136,12 @@ void Sprite::draw()
 	{
 		// Convert our floating pt rect to an int-based rect
 		SDL_Rect r = { (int)rect.x, (int)rect.y, (int)rect.w, (int)rect.h };
-		sdl->drawTexture( tex, r );
+
+		// if he's facing left, invert x
+		if( movingLeft )
+			sdl->drawTextureFlippedX( tex, r );
+		else
+			sdl->drawTexture( tex, r );
 	}
 }
 

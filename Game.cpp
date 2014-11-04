@@ -31,10 +31,8 @@ Game::Game( SDL& iSdl )
 
 	// load the sfx. These sfx were created with SFXR
 	// http://www.drpetter.se/project_sfxr.html
-	sdl->loadWavSound( "ping0.wav" );
-	sdl->loadWavSound( "ping1.wav" );
-	sdl->loadWavSound( "ping2.wav" );
-	sdl->loadWavSound( "ping3.wav" );
+	sdl->loadWavSound( "jump.wav" );
+	sdl->loadWavSound( "hitBlock.wav" );
 	sdl->loadWavSound( "win.wav" );
 	
 	TextureAtlas* ta = sdl->loadAtlas( "atlas.png", "atlas.txt" );

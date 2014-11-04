@@ -8,7 +8,10 @@ Player::Player(string name, string imageFile) : Sprite(name, imageFile)
 void Player::jump()
 {
 	if( contactingGround )
+	{
 		vel.y += -10;
+		sdl->playSound( "jump.wav" );
+	}	
 }
 
 void Player::bounceDown()
@@ -19,6 +22,7 @@ void Player::bounceDown()
 void Player::accel( float amt )
 {
 	vel.x += amt;
+	movingLeft = amt < 0;
 }
 
 void Player::update()
@@ -29,3 +33,4 @@ void Player::update()
 	vel.x *= 0.97;
 	clamp<float>( vel.x, -5.f, 5.f );
 }
+
