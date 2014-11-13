@@ -4,10 +4,18 @@
 #include <map>
 using namespace std;
 
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#include <SDL2_Image/SDL_image.h>
+#include <SDL2_Mixer/SDL_mixer.h>
+#include <SDL2_TTF/SDL_ttf.h>
+#else
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
+#endif
+
 #include "TextureAtlas.h"
 #include "Log.h"
 #include "RectF.h"

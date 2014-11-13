@@ -1,7 +1,11 @@
 #ifndef COLORS_H
 #define COLORS_H
 
+#ifdef __APPLE__
+#include <SDL2/sdl.h>
+#else
 #include <sdl.h>
+#endif
 
 extern SDL_Color White, Black, Red, Green, Blue, Yellow;
 

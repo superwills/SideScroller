@@ -1,7 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
+#ifdef __APPLE__
+#include <SDL2/SDL.h>
+#else
 #include <SDL.h>
+#endif
 #include "SDLO.h"
 #include "Sprite.h"
 #include "Controller.h"

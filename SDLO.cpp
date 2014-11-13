@@ -22,11 +22,26 @@ size(windowWidth, windowHeight)
 	
 	// retrieve the surface (collection of pixels) of the window
 	screenSurface = SDL_GetWindowSurface( window );
-
+	if( !screenSurface )
+    {
+    	error( "Could not create screenSurface %s", SDL_GetError() );
+    }
+    
 	// create a hardware accelerated renderer
 	// that displays only once per refresh interval
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
-
+	if( !renderer )
+    {
+		error( "Could not create renderer %s", SDL_GetError() );
+	    renderer = SDL_GetRenderer( window );
+        if( renderer )
+        {
+        	// delete default to get one with vsync on
+        	SDL_DestroyRenderer( renderer );
+    		renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+        }
+    }
+    
 	// Turn on alpha blending
 	SDL_SetRenderDrawBlendMode( renderer, SDL_BLENDMODE_BLEND );
 
@@ -55,28 +70,28 @@ void SDL::line( int startX, int startY, int endX, int endY, SDL_Color color )
 
 void SDL::rect( int x, int y, int w, int h, SDL_Color color )
 {
-	SDL_Rect rect = { x - origin.x, y - origin.y, w, h };
+	SDL_Rect rect = { (int)(x - origin.x), (int)(y - origin.y), (int)w, (int)h };
 	setColor( color );
 	SDL_RenderDrawRect( renderer, &rect );
 }
 
 void SDL::rect( RectF rect, SDL_Color color )
 {
-	SDL_Rect r = { rect.x - origin.x, rect.y - origin.y, rect.w, rect.h };
+	SDL_Rect r = { (int)(rect.x - origin.x), (int)(rect.y - origin.y), (int)rect.w, (int)rect.h };
 	setColor( color );
 	SDL_RenderDrawRect( renderer, &r );
 }
 
 void SDL::fillRect( int x, int y, int w, int h, SDL_Color color )
 {
-	SDL_Rect rect = { x - origin.x, y - origin.y, w, h };
+	SDL_Rect rect = { (int)(x - origin.x), (int)(y - origin.y), (int)w, (int)h };
 	setColor( color );
 	SDL_RenderFillRect( renderer, &rect );
 }
 
 void SDL::fillRect( RectF rect, SDL_Color color )
 {
-	SDL_Rect r = { rect.x - origin.x, rect.y - origin.y, rect.w, rect.h };
+	SDL_Rect r = { (int)(rect.x - origin.x), (int)(rect.y - origin.y), (int)rect.w, (int)rect.h };
 	setColor( color );
 	SDL_RenderFillRect( renderer, &r );
 }
@@ -99,7 +114,7 @@ void SDL::drawAtlasSpriteAt( int x, int y, string atlasName, string spriteName )
 {
 	TextureAtlas *ta = texAtlases[ atlasName ];
 	SDL_Rect src = ta->spriteRects[ spriteName ];
-	SDL_Rect dst = { x - origin.x, y - origin.y, src.w, src.h };
+	SDL_Rect dst = { (int)(x - origin.x), (int)(y - origin.y), (int)src.w, (int)src.h };
 	SDL_RenderCopy( renderer, ta->tex, &src, &dst );
 }
 
@@ -130,7 +145,9 @@ void SDL::playSound( string soundFile )
 SDL_Surface* SDL::loadSurface( string filename )
 {
 	// don't optimize the surface because it obliterates the alpha channel
-	return IMG_Load( filename.c_str() );
+	SDL_Surface *surf = IMG_Load( filename.c_str() );
+    if( !surf ) error( "Couldn't load surface `%s`!", filename.c_str() );
+    return surf;
 }
 
 SDL_Texture* SDL::loadTexture( string filename )
@@ -143,8 +160,8 @@ SDL_Texture* SDL::loadTexture( string filename )
 	}
 	
 	SDL_Texture* tex = SDL_CreateTextureFromSurface( renderer, loadSurface(filename) );
+	if( !tex ) error( "loadTexture: SDL_CreateTextureFromSurface failed %s %s", filename.c_str(), SDL_GetError() );
 	SDL_SetTextureBlendMode( tex, SDL_BLENDMODE_BLEND );
-	
 	texes[ filename ] = tex;
 	return tex;
 }
@@ -161,7 +178,9 @@ TextureAtlas* SDL::loadAtlas( string imagefile, string datafile )
 SDL_Texture* SDL::makeText( TTF_Font* font, string text, SDL_Color color )
 {
 	SDL_Surface *messagesurf = TTF_RenderText_Blended( font, text.c_str(), color );
+	if( !messagesurf ) error( "TTF_RenderText_Solid failed %s", text.c_str() );
 	SDL_Texture* texture = SDL_CreateTextureFromSurface( renderer, messagesurf );
+	if( !texture ) error( "TTF_RenderText_Solid texture failed %s", text.c_str() );
 	SDL_FreeSurface( messagesurf );
 	return texture;
 }
@@ -175,6 +194,7 @@ Mix_Music* SDL::loadMusic( string filename )
 	}
 
 	Mix_Music *music = Mix_LoadMUS( filename.c_str() ) ;
+	if( !music ) error( "Couldn't load music `%s`!", filename.c_str() );
 	musics[filename] = music;
 	return music;
 }
@@ -188,6 +208,7 @@ Mix_Chunk* SDL::loadWavSound( string waveFilename )
 	}
 	
 	Mix_Chunk *sound = Mix_LoadWAV( waveFilename.c_str() ) ;
+	if( !sound ) error( "Couldn't load sound `%s`!", waveFilename.c_str() );
 	sfx[waveFilename] = sound;
 	return sound;
 }

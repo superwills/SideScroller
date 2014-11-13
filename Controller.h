@@ -1,7 +1,11 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
+#ifdef __APPLE__
+#include <SDL2/sdl.h>
+#else
 #include <sdl.h>
+#endif
 
 // handles user input and modifies the game state based on that
 class Controller
